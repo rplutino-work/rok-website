@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Box, Container, Grid, Button, Input, Heading, Text } from 'theme-ui';
 
 import Image from 'components/image';
@@ -8,8 +8,23 @@ import img2 from 'assets/partner-1-2.png';
 import img3 from 'assets/partner-1-3.png';
 
 import bannerImg from 'assets/banner-image-1-1.png';
+import mailchimpSusc from '../pages/api/subscribe'
+
 
 const Banner = () => {
+  const [emailValue, setemailValue] = useState("")
+
+  function handleSubmit (event) {
+    event.preventDefault()
+    let data = {email:emailValue}
+    mailchimpSusc(data)
+  }
+
+  function handleChange (event) {
+
+    setemailValue(event.target.value)
+  }
+
   return (
     <Box sx={styles.banner} id="banner">
       <Container sx={styles.container}>
@@ -21,11 +36,11 @@ const Banner = () => {
             <Text as="p">
             Lideramos el camino hacia el éxito con nuestro equipo dedicado y altamente capacitado, transformando su visión en una realidad concreta y alcanzable.
             </Text>
-            <Box as="form" sx={styles.form}>
+            <Box as="form" sx={styles.form} onSubmit={handleSubmit}>
               <Box as="label" htmlFor="contactanos" variant="styles.srOnly">
                 subscribe
               </Box>
-              <Input
+              <Input onChange={handleChange}
                 name="Contactanos"
                 id="contactanos"
                 placeholder="Tu email"

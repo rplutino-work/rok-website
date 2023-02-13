@@ -1,8 +1,9 @@
 import fetch from 'isomorphic-unfetch';
 
-export default async (req, res) => {
+export default async function mailchimpSusc (req, res)  {
   // 1. Destructure the email address from the request body.
-  const { email } = req.body;
+  console.log(req)
+  const { email } = req;
 
   if (!email) {
     // 2. Throw an error if an email wasn't provided.
@@ -11,8 +12,8 @@ export default async (req, res) => {
 
   try {
     // 3. Fetch the environment variables.
-    const LIST_ID = process.env.MAILCHIMP_LIST_ID; //5731324a36
-    const API_KEY = process.env.MAILCHIMP_API_KEY; // 1af674e6c92ffd26a97110eaa1c72cec-us4
+    const LIST_ID = "82a1a2e1b2"; //5731324a36
+    const API_KEY = "ac918ae28c3671b2f421aba6683e98bb-us9"; // 1af674e6c92ffd26a97110eaa1c72cec-us4
     // 4. API keys are in the form <key>-us3.
     const DATACENTER = API_KEY.split('-')[1];
 
@@ -28,8 +29,8 @@ export default async (req, res) => {
       {
         body: JSON.stringify(data),
         headers: {
-          Authorization: `apikey ${API_KEY}`,
           'Content-Type': 'application/json',
+          'Authorization': `Basic ${API_KEY}`,
         },
         method: 'POST',
       }
@@ -45,6 +46,6 @@ export default async (req, res) => {
     // 8. If we made it this far, it was a success! 🎉
     return res.status(201).json({ error: '' });
   } catch (error) {
-    return res.status(500).json({ error: error.message || error.toString() });
+      return res.status(500).json({ error: error.message || error.toString() });
   }
 };
