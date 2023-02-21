@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-unfetch';
+import axios from 'axios'
 
 
 export default async function mailchimpSusc (req, res)  {
@@ -26,18 +27,12 @@ export default async function mailchimpSusc (req, res)  {
     };
 
     // 6. Send a POST request to Mailchimp.
-    const response = await fetch(
-      `https://${DATACENTER}.api.mailchimp.com/3.0/lists/${LIST_ID}/members`,
-      {
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Basic ${API_KEY}`,
-        },
-        method: 'POST',
-      }
-    );
-
+    const response = await await axios.post(`https://${DATACENTER}.api.mailchimp.com/3.0/lists/${LIST_ID}/members`, {
+      'Content-Type': 'application/json',
+      'Authorization': `Basic ${API_KEY}`
+  }
+  )
+ 
     // 7. Swallow any errors from Mailchimp and return a better error message.
     if (response.status >= 400) {
       return res.status(400).json({
